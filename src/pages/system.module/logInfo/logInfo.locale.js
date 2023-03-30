@@ -1,0 +1,32 @@
+export const logInfoLocale = {
+    zh_TW: {
+        title: {"label": "系統日誌"},
+        id: {"label": "ID"},
+        sysNo: {"label": "系統碼"},
+        code: {"label": "日誌代碼"},
+        applicant: {"label": "建檔人"},
+        createDept: {"label": "建檔部門"},
+        action: {"label": "日誌別"},
+        srcFlowKey: {"label": "資料代碼"},
+        updateAccount: {"label": "異動帳號"},
+        updateUserName: {"label": "異動人"},
+        srcTable: {"label": "資料表"},
+        updateTime: {"label": "日誌時間"},
+        actionInfo: {"label": "日誌內容"},
+    },
+    en_US: {
+        title: {"label": "LogInfo"},
+        id: {"label": "ID"},
+        sysNo: {"label": "SysNo"},
+        code: {"label": "Code"},
+        applicant: {"label": "Applicant"},
+        createDept: {"label": "CreateDept"},
+        action: {"label": "Action"},
+        srcFlowKey: {"label": "SrcFlowKey"},
+        updateAccount: {"label": "UpdateAccount"},
+        updateUserName: {"label": "UpdateUserName"},
+        srcTable: {"label": "SrcTable"},
+        updateTime: {"label": "UpdateTime"},
+        actionInfo: {"label": "ActionInfo"},
+    }
+}

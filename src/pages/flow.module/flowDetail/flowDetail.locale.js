@@ -1,0 +1,31 @@
+export const flowDetailLocale = {
+    zh_TW: {
+        title: {"label": "簽核記錄"},
+        id: {"label": "ID"},
+        code: {"label": "流程碼"},
+        seqNo: {"label": "順序"},
+        step: {"label": "關卡"},
+        stepName: {"label": "關卡名稱"},
+        signerId: {"label": "簽核人"},
+        signerName: {"label": "簽核人名稱"},
+        signerDepartment: {"label": "簽核部門"},
+        signedTime: {"label": "簽核時間"},
+        signedResult: {"label": "簽核結果"},
+        formTableName: {"label": "表單名稱"},
+        memo: {"label": "簽核意見"},
+    },
+    en_US: {
+        title: {"label": "FlowDetail"},
+        id: {"label": "ID"},
+        seqNo: {"label": "SeqNo"},
+        step: {"label": "Step"},
+        stepName: {"label": "StepName"},
+        signerId: {"label": "SignerId"},
+        signerName: {"label": "SignerName"},
+        signerDepartment: {"label": "SignerDepartment"},
+        signedTime: {"label": "SignedTime"},
+        signedResult: {"label": "SignedResult"},
+        formTableName: {"label": "FormTableName"},
+        memo: {"label": "Memo"},
+    }
+}
