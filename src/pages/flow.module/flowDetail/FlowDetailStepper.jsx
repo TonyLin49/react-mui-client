@@ -6,14 +6,12 @@ import { sequelizeApiBaseURL } from '../../../apis/data.api';
 const FlowDetailStepper = ({
     flowData
 }) => {
-
-    const parentId = flowData.id
     
     const query = useQuery({
-        queryKey: `FlowDetailStepperPanel.details-${parentId}`,
+        queryKey: `FlowDetailStepperPanel.details-${flowData?.id}`,
         queryFn: async () => {
             const fetchURL = new URL(
-                `flowdetails/all?code=${parentId}`,
+                `flowdetails/all?code=${flowData?.id}`,
                 sequelizeApiBaseURL,
             );
             const response = await fetch(fetchURL.href);

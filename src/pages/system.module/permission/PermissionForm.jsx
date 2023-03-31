@@ -1,18 +1,17 @@
 import { FIELD_TYPE } from '../../../constants/globalConstant'
 import HookDynamicForm from '../../../components/dynaHookForm/HookDynamicForm'
 import * as Yup from 'yup'
-import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from 'react'
-import { 
-    create, 
+import {
+    create,
     update,
     findByCode
 } from './permission.api'
 import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { notificationAlertState } from '../../../atoms/globalAtom';
-import { 
-    departmentOptionsSelector, 
-    programOptionsAtom, 
+import {
+    departmentOptionsSelector,
+    programOptionsAtom,
     roleOptionsAtom
 } from '../../../atoms/optionsAtom';
 import { getNewFormValues, setInsertBaseValue } from '../../../utils/globalUtil';
@@ -21,8 +20,8 @@ import { permissionDefaultValuesAtom } from '../../../atoms/permissionAtom';
 
 const PermissionForm = ({
     lan,
-    actionMode, 
-    currentRow, 
+    actionMode,
+    currentRow,
     onCloseFC,
     syncDataFC,
     handleCloseForm,
@@ -30,165 +29,166 @@ const PermissionForm = ({
     const paperSize = 480
 
     const permissionValues = useRecoilValue(permissionDefaultValuesAtom)
-    const setNotification = useSetRecoilState(notificationAlertState) 
+    const setNotification = useSetRecoilState(notificationAlertState)
     const [serverMessage, setServerMessage] = useRecoilState(serverMessageAtom)
-    const [formData, setFormData] = useState(currentRow || permissionValues) 
+    const [formData, setFormData] = useState(currentRow || permissionValues)
     const [fieldProps] = useState({})
-    const [parentTable, setSelected] = useState({value:'All'})
-    const [parentIdOptions, setParentIdOptions] = useState([]) 
+    const [parentTable, setSelected] = useState({ value: 'All' })
+    const [parentIdOptions, setParentIdOptions] = useState([])
 
     const deptOptions = useRecoilValue(departmentOptionsSelector)
     const roleOptions = useRecoilValue(roleOptionsAtom)
     const programOptions = useRecoilValue(programOptionsAtom)
 
-    useEffect(()=>{ 
-        if(currentRow) {
+    useEffect(() => {
+        if (currentRow) {
             setFormData(currentRow)
-            setSelected({value:currentRow.parentTable})
+            setSelected({ value: currentRow.parentTable })
         } else {
             setFormData(permissionValues)
         }
-    },[currentRow,permissionValues])
+    }, [currentRow, permissionValues])
 
-    useEffect(()=>{
+    useEffect(() => {
         setParentIdOptions([])
-        if(parentTable.value==='Department') 
+        if (parentTable.value === 'Department')
             setParentIdOptions(deptOptions)
-        if(parentTable.value==='Role') 
+        if (parentTable.value === 'Role')
             setParentIdOptions(roleOptions)
-    },[parentTable,deptOptions,roleOptions])
+    }, [parentTable, deptOptions, roleOptions])
 
     const authOptions = [
-        {value:'All', label:'All-全部'},
-        {value:'Self', label:'Self-自己'},
-        {value:'Department', label:'Department-部門'},
-        {value:'Disabled', label:'Disabled-禁用'},
+        { value: 'All', label: 'All-全部' },
+        { value: 'Self', label: 'Self-自己' },
+        { value: 'Department', label: 'Department-部門' },
+        { value: 'Disabled', label: 'Disabled-禁用' },
     ]
 
     const authTypeOptions = [
-        {value:'All', label:'All-所有人'},
-        {value:'Role', label:'Role-角色'},
-        {value:'Department', label:'Department-部門'},
+        { value: 'All', label: 'All-所有人' },
+        { value: 'Role', label: 'Role-角色' },
+        { value: 'Department', label: 'Department-部門' },
     ]
 
     const titleText = lan?.title?.label
 
-    const fieldsSchema = [ 
-        { 
-            name: 'code', 
+    const fieldsSchema = [
+        {
+            name: 'code',
             label: lan?.code?.label,
-            fieldType: FIELD_TYPE.TEXT_FIELD, 
+            fieldType: FIELD_TYPE.TEXT_FIELD,
             defaultValue: '',
-            props: {...fieldProps, disabled: true},
-            xs:12, sm:12, md:12,
+            props: { ...fieldProps, disabled: true },
+            xs: 12, sm: 12, md: 12,
         },
         {
-            name: 'parentTable', 
+            name: 'parentTable',
             label: lan?.parentTable?.label,
-            fieldType: actionMode==='update' || formData.parentTable!=='' 
-                        ? FIELD_TYPE.TEXT_FIELD
-                        : FIELD_TYPE.AUTOCOMPLETE_FIELD, 
+            fieldType: actionMode === 'update' || formData.parentTable !== ''
+                ? FIELD_TYPE.TEXT_FIELD
+                : FIELD_TYPE.AUTOCOMPLETE_FIELD,
             defaultValue: '',
-            disabled: actionMode==='update',
+            disabled: actionMode === 'update',
             props: {
-                ...fieldProps, 
-                disabled: actionMode==='update' || formData.parentTable!=='' ? true : false
+                ...fieldProps,
+                disabled: actionMode === 'update' || formData.parentTable !== '' ? true : false
             },
             options: authTypeOptions,
-            setSelectedFC: {setSelected},
-            xs: 6, sm:6, md:6,
+            setSelectedFC: { setSelected },
+            xs: 6, sm: 6, md: 6,
         },
         {
-            name: 'parentId', 
+            name: 'parentId',
             label: lan?.parentId?.label,
-            fieldType: actionMode==='update' || formData.parentId!=='' 
-                        ? FIELD_TYPE.TEXT_FIELD
-                        : FIELD_TYPE.AUTOCOMPLETE_FIELD, 
+            fieldType: actionMode === 'update' || formData.parentId !== ''
+                ? FIELD_TYPE.TEXT_FIELD
+                : FIELD_TYPE.AUTOCOMPLETE_FIELD,
             defaultValue: '',
             props: {
-                ...fieldProps, 
-                disabled: actionMode==='update' || formData.parentTable!=='' ? true : false},
+                ...fieldProps,
+                disabled: actionMode === 'update' || formData.parentTable !== '' ? true : false
+            },
             options: parentIdOptions,
-            xs: 6, sm:6, md:6,
+            xs: 6, sm: 6, md: 6,
         },
         {
-            name: 'programId', 
+            name: 'programId',
             label: lan?.programId?.label,
-            fieldType: actionMode==='update' 
-                        ? FIELD_TYPE.TEXT_FIELD
-                        : FIELD_TYPE.AUTOCOMPLETE_FIELD, 
+            fieldType: actionMode === 'update'
+                ? FIELD_TYPE.TEXT_FIELD
+                : FIELD_TYPE.AUTOCOMPLETE_FIELD,
             defaultValue: '',
             props: {
-                ...fieldProps, 
-                disabled: actionMode==='update' ? true : false
+                ...fieldProps,
+                disabled: actionMode === 'update' ? true : false
             },
             options: programOptions,
-            xs:12, sm:12, md:12,
+            xs: 12, sm: 12, md: 12,
         },
         {
-            name: 'searchAuth', 
+            name: 'searchAuth',
             label: lan?.searchAuth?.label,
-            fieldType: FIELD_TYPE.AUTOCOMPLETE_FIELD, 
+            fieldType: FIELD_TYPE.AUTOCOMPLETE_FIELD,
             defaultValue: '',
-            props: {...fieldProps},
+            props: { ...fieldProps },
             options: authOptions,
-            xs: 6, sm:6, md:6,
+            xs: 6, sm: 6, md: 6,
         },
         {
-            name: 'canInsert', 
+            name: 'canInsert',
             label: lan?.canInsert?.label,
-            fieldType: FIELD_TYPE.CHECKBOX_FIELD, 
+            fieldType: FIELD_TYPE.CHECKBOX_FIELD,
             defaultValue: '',
-            props: {...fieldProps},
-            xs: 6, sm:6, md:6,
+            props: { ...fieldProps },
+            xs: 6, sm: 6, md: 6,
         },
         {
-            name: 'updateAuth', 
+            name: 'updateAuth',
             label: lan?.updateAuth?.label,
-            fieldType: FIELD_TYPE.AUTOCOMPLETE_FIELD, 
+            fieldType: FIELD_TYPE.AUTOCOMPLETE_FIELD,
             defaultValue: '',
-            props: {...fieldProps},
+            props: { ...fieldProps },
             options: authOptions,
-            xs: 6, sm:6, md:6,
+            xs: 6, sm: 6, md: 6,
         },
         {
-            name: 'deleteAuth', 
+            name: 'deleteAuth',
             label: lan?.deleteAuth?.label,
-            fieldType: FIELD_TYPE.AUTOCOMPLETE_FIELD, 
+            fieldType: FIELD_TYPE.AUTOCOMPLETE_FIELD,
             defaultValue: '',
-            props: {...fieldProps},
+            props: { ...fieldProps },
             options: authOptions,
-            xs: 6, sm:6, md:6,
+            xs: 6, sm: 6, md: 6,
         },
         {
-            name: 'multiDeptsAuth', 
+            name: 'multiDeptsAuth',
             label: lan?.multiDeptsAuth?.label,
-            fieldType: FIELD_TYPE.AUTOCOMPLETE_FIELD, 
+            fieldType: FIELD_TYPE.AUTOCOMPLETE_FIELD,
             defaultValue: '',
-            props: {...fieldProps},
+            props: { ...fieldProps },
             options: deptOptions,
             multiple: true,
-            xs:12, sm:12, md:12,
+            xs: 12, sm: 12, md: 12,
         },
         {
-            name: 'memo', 
+            name: 'memo',
             label: lan?.memo?.label,
-            fieldType: FIELD_TYPE.TEXTAREA_FIELD, 
+            fieldType: FIELD_TYPE.TEXTAREA_FIELD,
             defaultValue: '',
-            props: {...fieldProps},
-            xs:12, sm:12, md:12,
+            props: { ...fieldProps },
+            xs: 12, sm: 12, md: 12,
         },
     ]
 
     const validateSchema = Yup.object().shape(
-        { 
+        {
             parentTable: Yup.string()
                 .required(lan?.parentTable?.required),
             parentId: Yup.string().when('parentTable', {
                 is: (val) => val === 'Department' || val === 'Role',
                 then: Yup.string().required(lan?.parentId?.required),
                 otherwise: Yup.string().notRequired(),
-                }),
+            }),
             programId: Yup.string()
                 .required(lan?.programId?.required),
             searchAuth: Yup.string()
@@ -200,57 +200,56 @@ const PermissionForm = ({
         }
     )
 
-    const accessDataSuccessfully = (message)=>{
+    const accessDataSuccessfully = (message) => {
         onCloseFC()
         setNotification({
-            open: true, 
-            message: message, 
+            open: true,
+            message: message,
             severity: 'success'
         })
         requestAnimationFrame(() => {
-            setTimeout(()=>{syncDataFC()},500)
+            setTimeout(() => { syncDataFC() }, 500)
         })
     }
 
     const submitFC = async (formValues, reset) => {
         setServerMessage(null)
-        if(actionMode==='view') onCloseFC()
+        if (actionMode === 'view') onCloseFC()
         const newFormValues = getNewFormValues(formValues)
-        if(actionMode==='insert'){
+        if (actionMode === 'insert') {
             const newCode = `${formValues.parentTable}-${formValues.parentId}-${formValues.programId}`
             const findPermissionByCode = await findByCode(newCode)
-            if(findPermissionByCode && findPermissionByCode.code===newCode){
+            if (findPermissionByCode && findPermissionByCode.data.code === newCode) {
                 setServerMessage('此權限碼已設定過，無需重複設定，請改用修改功能')
                 reset()
             } else {
                 setInsertBaseValue(newFormValues)
-                newFormValues.id = uuidv4()
                 newFormValues.code = newCode
                 create(newFormValues)
-                .then(res => accessDataSuccessfully('資料新增成功'))
-                .catch(error => setServerMessage(`新增資料發生錯誤：${error}`))
+                    .then(res => accessDataSuccessfully('資料新增成功'))
+                    .catch(error => setServerMessage(`新增資料發生錯誤：${error}`))
             }
         }
-        if(actionMode==='update'){
+        if (actionMode === 'update') {
             const newCode = `${formValues.parentTable}-${formValues.parentId}-${formValues.programId}`
-            if(formValues.code===newCode){
+            if (formValues.code === newCode) {
                 update(formValues)
-                .then(res=> accessDataSuccessfully('資料修改成功'))
-                .catch(error=> setServerMessage(`資料修改發生錯誤：${error}`))
+                    .then(res => accessDataSuccessfully('資料修改成功'))
+                    .catch(error => setServerMessage(`資料修改發生錯誤：${error}`))
             } else {
                 setServerMessage(`權限類別、權限內值、程式代碼不可修改`)
                 reset()
             }
         }
-        if(serverMessage){
+        if (serverMessage) {
             requestAnimationFrame(() => {
-                setTimeout(()=>{setServerMessage(null)},5000)
+                setTimeout(() => { setServerMessage(null) }, 5000)
             })
         }
     }
-    
+
     return (<>
-        <HookDynamicForm 
+        <HookDynamicForm
             titleText={titleText}
             submitText={lan?.submit?.label || '送出'}
             formFields={fieldsSchema}

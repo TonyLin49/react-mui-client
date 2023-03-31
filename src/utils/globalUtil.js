@@ -55,7 +55,9 @@ export const getInputPropsByStatus = (formAction)=>{
 
 export const setInsertBaseValue = (formValue) => {
     const sessionUser = getSessionData(SESSION_USER_OBJECT)
-    formValue.id = uuidv4()
+    let jsTimestamp = Date.now();
+    let uid = uuidv4()
+    formValue.id = `${jsTimestamp}-${uid.split('-')[0]}`
     formValue.applicant = sessionUser.applicant
     formValue.sysNo = sessionUser.sysNo
     formValue.createDept = sessionUser.createDept

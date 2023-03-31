@@ -77,7 +77,7 @@ export default function FlowAccordions({id}) {
   const deptOptions = useRecoilValue(departmentOptionsSelector)
 
   return (<>
-    {flowData.status!=='draft' && 
+    {flowData.status && flowData.status!=='draft' && 
     <>
       <Accordion expanded={expanded === 'flowSteps'} onChange={handleChange('flowSteps')}>
         <AccordionSummary aria-controls="flowSteps-content" id="flowSteps-header">

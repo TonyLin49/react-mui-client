@@ -37,6 +37,7 @@ import {
 import { windowPrinter } from "../../utils/windowUtil";
 import DynaAutocompleteField from "./DynaAutocompleteField";
 import { serverMessageAtom } from "../../atoms/formAtom";
+import { today } from "../../utils/dayUtil";
 
 const HookDynamicForm = ({
       titleText, 
@@ -340,7 +341,7 @@ const HookDynamicForm = ({
                 return  <Grid item key={name} xs={xs||12} sm={sm||12} md={md||12}>
                           <DynaTextField control={control} 
                             name={name} label={label} 
-                            props={{...props, type: 'date', InputLabelProps:{ shrink: true }}}
+                    props={{ ...props, type: 'date', defaultValue: today(), InputLabelProps:{ shrink: true }}}
                           />
                         </Grid>
               case FIELD_TYPE.TIME_FIELD:

@@ -11,7 +11,6 @@ import {
   departmentOptionsSelector,
   groupCategoriesSelector, 
   groupUserCategoriesSelector,
-  categoryOptionsSelector,
 } from '../../../atoms/optionsAtom';
 import { handleShowCellContent } from '../../../components/materialReactTable/cell/cellUtil';
 import IsCheck from '../../../components/materialReactTable/cell/IsCheck';
